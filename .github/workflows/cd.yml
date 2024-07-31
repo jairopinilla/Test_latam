@@ -30,7 +30,7 @@ jobs:
           push: true
           tags: us-central1-docker.pkg.dev/latam-test/delay-api:latest
 
-      - name: Deploy to Cloud Run
+      - name: Deploy Cloud Run
         uses: google-github-actions/deploy-cloudrun@v1
         with:
           image: us-central1-docker.pkg.dev/latam-test/delay-api:latest
