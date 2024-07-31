@@ -8,8 +8,8 @@ import os
 import sys
 
 #sys.path.append(str(Path(__file__).parent))
-#from challenge.model import DelayModel
-from model import DelayModel
+from challenge.model import DelayModel
+#from model import DelayModel
 
 #definir pkl y lo cargo
 
