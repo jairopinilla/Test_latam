@@ -1,6 +1,3 @@
- - id: 'auth'
-        uses: 'google-github-actions/auth@v1'
-        with:
 name: Continuous Deployment
 
 on:
