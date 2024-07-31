@@ -20,6 +20,7 @@
 *.tar
 *.zip
 .env
+.venv
 
 # Logs and databases #
 ######################

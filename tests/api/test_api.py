@@ -4,6 +4,7 @@ from fastapi.testclient import TestClient
 from challenge import app
 
 
+
 class TestBatchPipeline(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
