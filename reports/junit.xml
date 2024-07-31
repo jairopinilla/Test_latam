@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="4" time="10.772" timestamp="2024-07-30T19:59:02.878385" hostname="CL-IT01638"><testcase classname="tests.api.test_api.TestBatchPipeline" name="test_should_failed_unkown_column_1" time="0.163" /><testcase classname="tests.api.test_api.TestBatchPipeline" name="test_should_failed_unkown_column_2" time="0.015" /><testcase classname="tests.api.test_api.TestBatchPipeline" name="test_should_failed_unkown_column_3" time="0.014" /><testcase classname="tests.api.test_api.TestBatchPipeline" name="test_should_get_predict" time="0.030"><failure message="KeyError: 'Fecha-O'">self = Index(['OPERA', 'TIPOVUELO', 'MES'], dtype='object'), key = 'Fecha-O', method = None, tolerance = None
+
+    def get_loc(self, key, method=None, tolerance=None):
+        """
+        Get integer location, slice or boolean mask for requested label.
+    
+        Parameters
+        ----------
+        key : label
+        method : {None, 'pad'/'ffill', 'backfill'/'bfill', 'nearest'}, optional
+            * default: exact matches only.
+            * pad / ffill: find the PREVIOUS index value if no exact match.
+            * backfill / bfill: use NEXT index value if no exact match
+            * nearest: use the NEAREST index value if no exact match. Tied
+              distances are broken by preferring the larger index value.
+        tolerance : int or float, optional
+            Maximum distance from index value for inexact matches. The value of
+            the index at the matching location must satisfy the equation
+            ``abs(index[loc] - key) &lt;= tolerance``.
+    
+        Returns
+        -------
+        loc : int if unique index, slice if monotonic index, else mask
+    
+        Examples
+        --------
+        &gt;&gt;&gt; unique_index = pd.Index(list('abc'))
+        &gt;&gt;&gt; unique_index.get_loc('b')
+        1
+    
+        &gt;&gt;&gt; monotonic_index = pd.Index(list('abbc'))
+        &gt;&gt;&gt; monotonic_index.get_loc('b')
+        slice(1, 3, None)
+    
+        &gt;&gt;&gt; non_monotonic_index = pd.Index(list('abcb'))
+        &gt;&gt;&gt; non_monotonic_index.get_loc('b')
+        array([False,  True, False,  True])
+        """
+        if method is None:
+            if tolerance is not None:
+                raise ValueError(
+                    "tolerance argument only valid if using pad, "
+                    "backfill or nearest lookups"
+                )
+            casted_key = self._maybe_cast_indexer(key)
+            try:
+&gt;               return self._engine.get_loc(casted_key)
+
+.venv/lib/python3.12/site-packages/pandas/core/indexes/base.py:3361: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+&gt;   ???
+
+pandas/_libs/index.pyx:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+&gt;   ???
+
+pandas/_libs/index.pyx:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+&gt;   ???
+
+pandas/_libs/hashtable_class_helper.pxi:5198: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+&gt;   ???
+E   KeyError: 'Fecha-O'
+
+pandas/_libs/hashtable_class_helper.pxi:5206: KeyError
+
+The above exception was the direct cause of the following exception:
+
+self = &lt;tests.api.test_api.TestBatchPipeline testMethod=test_should_get_predict&gt;
+
+    def test_should_get_predict(self):
+        data = {
+            "flights": [
+                {
+                    "OPERA": "Aerolineas Argentinas",
+                    "TIPOVUELO": "N",
+                    "MES": 3
+                }
+            ]
+        }
+        # when("xgboost.XGBClassifier").predict(ANY).thenReturn(np.array([0])) # change this line to the model of chosing
+&gt;       response = self.client.post("/predict", json=data)
+
+tests/api/test_api.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/requests/sessions.py:637: in post
+    return self.request("POST", url, data=data, json=json, **kwargs)
+.venv/lib/python3.12/site-packages/starlette/testclient.py:468: in request
+    return super().request(
+.venv/lib/python3.12/site-packages/requests/sessions.py:589: in request
+    resp = self.send(prep, **send_kwargs)
+.venv/lib/python3.12/site-packages/requests/sessions.py:703: in send
+    r = adapter.send(request, **kwargs)
+.venv/lib/python3.12/site-packages/starlette/testclient.py:266: in send
+    raise exc
+.venv/lib/python3.12/site-packages/starlette/testclient.py:263: in send
+    portal.call(self.app, scope, receive, send)
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:230: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:177: in _call_func
+    retval = await retval
+.venv/lib/python3.12/site-packages/fastapi/applications.py:208: in __call__
+    await super().__call__(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/applications.py:112: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:181: in __call__
+    raise exc
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:159: in __call__
+    await self.app(scope, receive, _send)
+.venv/lib/python3.12/site-packages/starlette/exceptions.py:82: in __call__
+    raise exc
+.venv/lib/python3.12/site-packages/starlette/exceptions.py:71: in __call__
+    await self.app(scope, receive, sender)
+.venv/lib/python3.12/site-packages/starlette/routing.py:656: in __call__
+    await route.handle(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:259: in handle
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:61: in app
+    response = await func(request)
+.venv/lib/python3.12/site-packages/fastapi/routing.py:226: in app
+    raw_response = await run_endpoint_function(
+.venv/lib/python3.12/site-packages/fastapi/routing.py:159: in run_endpoint_function
+    return await dependant.call(**values)
+challenge/api.py:117: in post_predict
+    features = delay_model.preprocess(request_df)
+challenge/model.py:51: in preprocess
+    data_process = self.process_feature(data)
+challenge/model.py:113: in process_feature
+    data['min_diff'] = data.apply(self.get_min_diff, axis = 1)
+.venv/lib/python3.12/site-packages/pandas/core/frame.py:8740: in apply
+    return op.apply()
+.venv/lib/python3.12/site-packages/pandas/core/apply.py:688: in apply
+    return self.apply_standard()
+.venv/lib/python3.12/site-packages/pandas/core/apply.py:812: in apply_standard
+    results, res_index = self.apply_series_generator()
+.venv/lib/python3.12/site-packages/pandas/core/apply.py:828: in apply_series_generator
+    results[i] = self.f(v)
+challenge/model.py:106: in get_min_diff
+    fecha_o = datetime.strptime(data['Fecha-O'], '%Y-%m-%d %H:%M:%S')
+.venv/lib/python3.12/site-packages/pandas/core/series.py:942: in __getitem__
+    return self._get_value(key)
+.venv/lib/python3.12/site-packages/pandas/core/series.py:1051: in _get_value
+    loc = self.index.get_loc(label)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = Index(['OPERA', 'TIPOVUELO', 'MES'], dtype='object'), key = 'Fecha-O', method = None, tolerance = None
+
+    def get_loc(self, key, method=None, tolerance=None):
+        """
+        Get integer location, slice or boolean mask for requested label.
+    
+        Parameters
+        ----------
+        key : label
+        method : {None, 'pad'/'ffill', 'backfill'/'bfill', 'nearest'}, optional
+            * default: exact matches only.
+            * pad / ffill: find the PREVIOUS index value if no exact match.
+            * backfill / bfill: use NEXT index value if no exact match
+            * nearest: use the NEAREST index value if no exact match. Tied
+              distances are broken by preferring the larger index value.
+        tolerance : int or float, optional
+            Maximum distance from index value for inexact matches. The value of
+            the index at the matching location must satisfy the equation
+            ``abs(index[loc] - key) &lt;= tolerance``.
+    
+        Returns
+        -------
+        loc : int if unique index, slice if monotonic index, else mask
+    
+        Examples
+        --------
+        &gt;&gt;&gt; unique_index = pd.Index(list('abc'))
+        &gt;&gt;&gt; unique_index.get_loc('b')
+        1
+    
+        &gt;&gt;&gt; monotonic_index = pd.Index(list('abbc'))
+        &gt;&gt;&gt; monotonic_index.get_loc('b')
+        slice(1, 3, None)
+    
+        &gt;&gt;&gt; non_monotonic_index = pd.Index(list('abcb'))
+        &gt;&gt;&gt; non_monotonic_index.get_loc('b')
+        array([False,  True, False,  True])
+        """
+        if method is None:
+            if tolerance is not None:
+                raise ValueError(
+                    "tolerance argument only valid if using pad, "
+                    "backfill or nearest lookups"
+                )
+            casted_key = self._maybe_cast_indexer(key)
+            try:
+                return self._engine.get_loc(casted_key)
+            except KeyError as err:
+&gt;               raise KeyError(key) from err
+E               KeyError: 'Fecha-O'
+
+.venv/lib/python3.12/site-packages/pandas/core/indexes/base.py:3363: KeyError</failure></testcase></testsuite></testsuites>
