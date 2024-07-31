@@ -17,23 +17,26 @@ jobs:
         with:
           credentials_json: '${{ secrets.GCP_CREDS }}'
 
-      - name: Set up Google 
+      - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
 
       - name: Configure Docker to use Artifact Registry
         run: gcloud auth configure-docker us-central1-docker.pkg.dev
 
-      - name: Build and push Docker image
+      - name: Build and Push Docker image
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
-          tags: us-central1-docker.pkg.dev/latam-test/delay-api:latest
+          tags: us-central1-docker.pkg.dev/analisisproyect/delay-api:latest
 
-      - name: Deploy Cloud Run
+      - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@v1
         with:
-          image: us-central1-docker.pkg.dev/latam-test/delay-api:latest
+          image: us-central1-docker.pkg.dev/analisisproyect/delay-api:latest
           service: latam-challenge
           region: us-east1
           flags: "--min-instances=1 --cpu=1 --memory=512Mi --port=80 --allow-unauthenticated"
+
+      - name: Show Output
+        run: echo ${{ steps.deploy.outputs.url }}
