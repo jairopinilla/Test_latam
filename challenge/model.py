@@ -9,7 +9,7 @@ from pathlib import Path
 import os
 
 class DelayModel:
-#columns
+
     FEATURES_COLS = [
         "OPERA_Latin American Wings", 
         "MES_7",
@@ -34,7 +34,6 @@ class DelayModel:
         data: pd.DataFrame,
         target_column: str = None
     ) -> Union[Tuple[pd.DataFrame, pd.DataFrame], pd.DataFrame]:
-    #Union(Tuple[pd.DataFrame, pd.DataFrame], pd.DataFrame):
         """
         Prepare raw data for training or predict.
 
@@ -47,23 +46,6 @@ class DelayModel:
             or
             pd.DataFrame: features.
         """
-        '''
-        data_process = self.process_feature(data)
-
-        #missing_columns = set(self.FEATURES_COLS) - set(data_process.columns)
-        #if missing_columns:
-         #   raise ValueError(f"The following required columns are missing: {missing_columns}")
-        
-        if target_column:
-            #features = data_process[self.FEATURES_COLS]
-            features = data_process.drop(columns=[target_column])
-            target = data_process[[target_column]]
-            return features, target
-        else:
-            #features = data_process[self.FEATURES_COLS]
-            features = data_process
-            return features
-        '''
         data_process = self.process_feature(data)
         if target_column:
             features = data_process.drop(columns=[target_column])
@@ -99,7 +81,7 @@ class DelayModel:
         features: pd.DataFrame
     ) -> List[int]:
         """
-        Predict delays for new flights.
+        Predicts delays for new flights.
 
         Args:
             features (pd.DataFrame): preprocessed data.
@@ -114,12 +96,29 @@ class DelayModel:
         #return
     
     def get_min_diff(self, data):
+        """
+        calculates the difference of time between two var
+
+        Args:
+            features (pd.DataFrame): preprocessed data.
+        
+        Returns:
+            The difference calculated to be asigned a column.
+        """
         fecha_o = datetime.strptime(data['Fecha-O'], '%Y-%m-%d %H:%M:%S')
         fecha_i = datetime.strptime(data['Fecha-I'], '%Y-%m-%d %H:%M:%S')
         min_diff = ((fecha_o - fecha_i).total_seconds()) / 60
         return min_diff
 
     def process_feature(self, data):
+        """
+        Leaves ready the data to be processed by the model.
+
+        Args:
+            features (pd.DataFrame): preprocessed data.
+        Returns:
+            Data encoded.
+        """
         features = pd.concat([
             pd.get_dummies(data['OPERA'], prefix='OPERA'),
             pd.get_dummies(data['TIPOVUELO'], prefix='TIPOVUELO'),
@@ -146,12 +145,10 @@ class DelayModel:
 
 
     def _load_model(self):
-        """If a pickled model exists on self.model_path it's loaded
-        on the class attribute self._model.
+        """Load the model in the class var
 
         Returns:
-            Union[LogisticRegression, None]: Model loaded,
-                Otherwise None.
+            The model loaded
         """
         loaded_model = None
         if self.path.is_file():
@@ -161,10 +158,9 @@ class DelayModel:
 
 
     def save_model(self, model):
-            """Save a model as pickle file.
+            """Save a model as pkl file.
             Args:
                 model (XGBClassifier): Model to be pickled.
-
             """
             with open(self.path, "wb") as model_file:
                 pickle.dump(model, model_file)
