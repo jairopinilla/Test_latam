@@ -9,7 +9,7 @@ from pathlib import Path
 import os
 
 class DelayModel:
-
+#columns
     FEATURES_COLS = [
         "OPERA_Latin American Wings", 
         "MES_7",
