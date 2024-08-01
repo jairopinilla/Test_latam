@@ -7,15 +7,10 @@ from pathlib import Path
 import os
 import sys
 
-#sys.path.append(str(Path(__file__).parent))
 from challenge.model import DelayModel
-#from model import DelayModel
-
-#definir pkl y lo cargo
-
 logger = logging.getLogger(__name__)
 
-# Listas de valores permitidos
+# List of allowed values
 ALLOWED_AIRLINES = [
     "Aerolineas Argentinas", "Aeromexico", "Air Canada", "Air France",
     "Alitalia", "American Airlines", "Austral", "Avianca",
@@ -30,8 +25,6 @@ ALLOWED_FLIGHT_TYPES = ["I", "N"]
 ALLOWED_MONTHS = [str(i) for i in range(1, 13)]
 
 class Flight(BaseModel):
-    """Pydantic model for API request body contract"""
-
     OPERA: str
     TIPOVUELO: str
     MES: str
@@ -55,8 +48,6 @@ class Flight(BaseModel):
         return v
 
 class Flights(BaseModel):
-    """Pydantic model for API request body contract"""
-
     flights: List[Flight]
 
 
@@ -65,14 +56,12 @@ app = fastapi.FastAPI()
 
 def is_payload_valid(data_payload: Dict[str, Any]) -> bool:
     """Check if the body request comply with the allowed
-    values for Pydantic model Flights.
-
+    values 
     Args:
         data_payload (Dict[str, Any]): Data payload received from request API.
 
     Returns:
-        bool: True if the payload is valid for the corresponding Pydantic model,
-        otherwise False.
+        bool: True if the payload is valid 
     """
     is_valid = False
     try:
@@ -82,12 +71,10 @@ def is_payload_valid(data_payload: Dict[str, Any]) -> bool:
         logger.error(err)
     return is_valid
 
-async def pickle_fitted_model() -> None:
-    """Async method to run on startup event of the API to create the DelayModel
-    that will be used during model serving.
+async def fit_model() -> None:
+    """ API to fit and create the DelayModel
     """
     base_path = os.path.dirname(os.path.abspath(__file__))
-    #data_path = os.path.join(base_path, '../../data/data.csv')
     data_path = os.path.join(base_path, '../data/data.csv')
     data = pd.read_csv(filepath_or_buffer=data_path)
     delay_model = DelayModel()
@@ -97,11 +84,10 @@ async def pickle_fitted_model() -> None:
 
 @app.on_event("startup")
 async def startup_event():
-    """FastAPI Startup to trigger the DelayModel fit process."""
-    logger.info("Fitting model ...")
-    await pickle_fitted_model()
+    """FastAPI Startup """
+    await fit_model()
     logger.info("Model Fitted!")
-    logger.info("FastAPI application has started")
+    logger.info("started app")
 
 
 @app.get("/health", status_code=200)

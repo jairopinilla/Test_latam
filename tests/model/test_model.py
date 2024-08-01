@@ -29,7 +29,6 @@ class TestModel(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
         self.model = DelayModel()
-        #self.data = pd.read_csv(filepath_or_buffer="../data/data.csv")
         base_path = os.path.dirname(os.path.abspath(__file__))
         data_path = os.path.join(base_path, '../../data/data.csv')
         self.data = pd.read_csv(filepath_or_buffer=data_path)
